@@ -23,6 +23,7 @@
  */
 
 require_once('../../config.php');
+require_once($CFG->dirroot. '/local/greetings/lib.php');
 $context = context_system::instance();
 $PAGE->set_context($context);
 $PAGE->set_url(new moodle_url('/local/greetings/index.php'));
@@ -33,9 +34,9 @@ $PAGE->set_heading(get_string('pluginname', 'local_greetings'));
 
 echo $OUTPUT->header();
 if (isloggedin()) {
-    $usergreeting = 'Greetings, ' . fullname($USER);
+    $usergreeting = local_greetings_get_greeting($USER);
 } else {
-    $usergreeting = 'Greetings, user';
+    $usergreeting = get_string('greetinguser', 'local_greetings');
 }
 
 $templatedata = ['usergreeting' => $usergreeting];
