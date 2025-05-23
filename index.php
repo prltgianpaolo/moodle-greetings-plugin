@@ -22,6 +22,24 @@
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+require_once('../../config.php');
+$context = context_system::instance();
+$PAGE->set_context($context);
+$PAGE->set_url(new moodle_url('/local/greetings/index.php'));
+$PAGE->set_pagelayout('standard');
+$PAGE->set_title(get_string('pluginname', 'local_greetings'));
+$PAGE->set_heading(get_string('pluginname', 'local_greetings'));
 
-$string['pluginname'] = 'Greetings';
+
+echo $OUTPUT->header();
+if (isloggedin()) {
+    $usergreeting = 'Greetings, ' . fullname($USER);
+} else {
+    $usergreeting = 'Greetings, user';
+}
+
+$templatedata = ['usergreeting' => $usergreeting];
+
+echo $OUTPUT->render_from_template('local_greetings/greeting_message', $templatedata);
+echo $OUTPUT->footer();
+

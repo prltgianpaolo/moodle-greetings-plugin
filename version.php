@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Plugin version and other meta-data are defined here.
+ * Main file to view greetings
  *
  * @package     local_greetings
- * @copyright   2025 <gianpaolo> <gparlati24@gmail.com>
+ * @copyright   2023 gianpaolo <gparlati24@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
