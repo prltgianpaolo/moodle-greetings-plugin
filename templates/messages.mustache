@@ -37,6 +37,13 @@
             </p>
             <p class="card-text">{{#str}} postedby, local_greetings, {{firstname}} {{/str}}
             </p>
+            {{#candeleteany}}
+            <p class="card-footer text-center">
+            <a href="{{config.wwwroot}}/local/greetings/index.php?action=del&id={{id}}">
+            {{#pix}} t/delete {{/pix}}{{#str}} delete {{/str}}
+            </a>
+            </p>
+            {{/candeleteany}}
         </div>
     </div>
 {{/messages}}

@@ -35,8 +35,21 @@ if (isguestuser()) {
     throw new moodle_exception('noguest');
 }
 
+$allowpost = has_capability('local/greetings:postmessages', $context);
+$deleteanypost = has_capability('local/greetings:deleteanymessage', $context);
+$allowview = has_capability('local/greetings:viewmessages', $context);
 $messageform = new \local_greetings\form\message_form();
+$action = optional_param('action', '', PARAM_TEXT);
+
+if ($action == 'del') {
+    $id = required_param('id', PARAM_INT);
+
+    if ($deleteanypost) {
+        $DB->delete_records('local_greetings_messages', ['id' => $id]);
+    }
+}
 if ($data = $messageform->get_data()) {
+    require_capability('local/greetings:postmessages', $context);
     $message = required_param('message', PARAM_TEXT);
 
     if (!empty($message)) {
@@ -46,6 +59,7 @@ if ($data = $messageform->get_data()) {
         $record->userid = $USER->id;
 
         $DB->insert_record('local_greetings_messages', $record);
+        redirect($PAGE->url);
     }
 }
 echo $OUTPUT->header();
@@ -58,17 +72,24 @@ if (isloggedin()) {
 $templatedata = ['usergreeting' => $usergreeting];
 
 echo $OUTPUT->render_from_template('local_greetings/greeting_message', $templatedata);
-$messageform->display();
-$userfields = \core_user\fields::for_name()->with_identity($context);
-$userfieldssql = $userfields->get_sql('u');
+if ($allowpost) {
+    $messageform->display();
+}
+if ($allowpost) {
+    $userfields = \core_user\fields::for_name()->with_identity($context);
+    $userfieldssql = $userfields->get_sql('u');
 
-$sql = "SELECT m.id, m.message, m.timecreated, m.userid {$userfieldssql->selects}
+    $sql = "SELECT m.id, m.message, m.timecreated, m.userid {$userfieldssql->selects}
           FROM {local_greetings_messages} m
      LEFT JOIN {user} u ON u.id = m.userid
       ORDER BY timecreated DESC";
 
-$messages = $DB->get_records_sql($sql);
-$templatedata = ['messages' => array_values($messages)];
-echo $OUTPUT->render_from_template('local_greetings/messages', $templatedata);
+    $messages = $DB->get_records_sql($sql);
+    $templatedata = [
+        'messages' => array_values($messages),
+        'candeleteany' => $deleteanypost,
+    ];
+    echo $OUTPUT->render_from_template('local_greetings/messages', $templatedata);
+}
 echo $OUTPUT->footer();
 
