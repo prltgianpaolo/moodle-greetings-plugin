@@ -69,9 +69,14 @@ function local_greetings_get_greeting($user) {
  * @param navigation_node $frontpage Nodo che rappresenta la home page nell'albero di navigazione.
  */
 function local_greetings_extend_navigation_frontpage(navigation_node $frontpage) {
-    $frontpage->add(
-        get_string('pluginname', 'local_greetings'),
-        new moodle_url('/local/greetings/index.php'),
-        navigation_node::TYPE_CUSTOM,
-    );
+    global $USER;
+
+    // Show link only if the user is logged in and is not a guest.
+    if (isloggedin() && !isguestuser()) {
+        $frontpage->add(
+            get_string('pluginname', 'local_greetings'),
+            new moodle_url('/local/greetings/index.php'),
+            navigation_node::TYPE_CUSTOM
+        );
+    }
 }
