@@ -87,8 +87,10 @@ if ($allowpost) {
       ORDER BY timecreated DESC";
 
     $messages = $DB->get_records_sql($sql);
+    $cardbackgroundcolor = get_config('local_greetings', 'messagecardbgcolor');
     $templatedata = [
         'messages' => array_values($messages),
+        'cardbackgroundcolor' => $cardbackgroundcolor,
         'candeleteany' => $deleteanypost,
     ];
     echo $OUTPUT->render_from_template('local_greetings/messages', $templatedata);

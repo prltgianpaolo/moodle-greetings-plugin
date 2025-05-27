@@ -24,23 +24,18 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['greetingloggedinuser'] = 'Greetings, {$a}.';
-$string['greetings:deleteanymessage'] = 'Delete any message on the Greetings wall';
-$string['greetings:postmessages'] = 'Post a new message on the Greetings wall';
-$string['greetings:viewmessages'] = 'View messages on the Greetings wall';
-$string['greetinguser'] = 'Greetings, user.';
-$string['greetinguserau'] = 'Hello, {$a}.';
-$string['greetinguseres'] = 'Hola, {$a}.';
-$string['greetinguserfj'] = 'Bula, {$a}.';
-$string['greetinguserit'] = 'Ciao, {$a}.';
-$string['greetingusernz'] = 'Kia Ora, {$a}.';
-$string['greetinguseruk'] = 'Hello, {$a}.';
-$string['greetinguserus'] = 'Hello, {$a}.';
-$string['messagecardbgcolor'] = 'Message card color';
-$string['messagecardbgcolordesc'] = 'Background color of the message card';
-$string['pluginname'] = 'Greetings';
-$string['postedby'] = 'Posted by {$a}.';
-$string['yourmessage'] = 'Your message';
+if ($hassiteconfig) {
+    $settings = new admin_settingpage('local_greetings', get_string('pluginname', 'local_greetings'));
+    $ADMIN->add('localplugins', $settings);
 
+    if ($ADMIN->fulltree) {
+        require_once($CFG->dirroot . '/local/greetings/lib.php');
 
-
+        $settings->add(new admin_setting_configtext(
+            'local_greetings/messagecardbgcolor',
+            get_string('messagecardbgcolor', 'local_greetings'),
+            get_string('messagecardbgcolordesc', 'local_greetings'),
+            '#FFFFFF',
+        ));
+    }
+}
