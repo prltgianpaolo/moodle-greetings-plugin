@@ -39,8 +39,16 @@
             </p>
             {{#candeleteany}}
             <p class="card-footer text-center">
-            <a href="{{config.wwwroot}}/local/greetings/index.php?action=del&id={{id}}&sesskey={{config.sesskey}}">
-            {{#pix}} t/delete {{/pix}}{{#str}} delete {{/str}}
+            <a href="{{config.wwwroot}}/local/greetings/index.php?action=del&id={{id}}&sesskey={{config.sesskey}}" 
+            role="button" 
+            class="btn btn-link p-0 m-0 align-middle"
+            aria-label="{{#str}} delete, local_greetings {{/str}}">
+            {{#pix}} t/delete, core, {{#str}} delete, local_greetings {{/str}} {{/pix}}
+            </a>
+            <a
+            href="{{config.wwwroot}}/local/greetings/edit.php?id={{id}}"
+            role="button">
+            {{#pix}} t/edit, core, {{#str}} edit {{/str}} {{/pix}}
             </a>
             </p>
             {{/candeleteany}}
